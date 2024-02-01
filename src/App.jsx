@@ -3,6 +3,7 @@ import "./App.css";
 // import { decrement, increment } from "./features/counter/counterSlice";
 import { TaskForm } from "./components/TaskForm";
 import { TaskList } from "./components/TaskList";
+import { StateProvider } from "./context/StateProvider";
 
 function App() {
     // const count = useSelector((state) => state.counter.value);
@@ -20,8 +21,10 @@ function App() {
                 </button>
             </>
             <> */}
-            <TaskForm />
-            <TaskList />
+            <StateProvider>
+                <TaskForm />
+                <TaskList />
+            </StateProvider>
             {/* </> */}
         </>
     );
