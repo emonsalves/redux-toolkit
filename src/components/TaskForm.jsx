@@ -25,6 +25,7 @@ const TaskForm = () => {
 
     return (
         <form onSubmit={handleSubmit}>
+            <h1>{!isEditing ? "Adding New Task" : "Edit Task"}</h1>
             <input type="text" placeholder="Title" value={task.title} name="title" onChange={(e) => onInputChange(e)} />
             <textarea placeholder="Description" value={task.description} name="description" onChange={(e) => onInputChange(e)} />
             <button type="submit">{!isEditing ? "Add" : "Edit"}</button>
