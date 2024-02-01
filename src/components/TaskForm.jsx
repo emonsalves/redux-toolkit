@@ -4,7 +4,7 @@ import { addTask, getTasks, editTask } from "../features/tasks/tasksActions";
 import { StateContext } from "../context/StateProvider";
 
 const TaskForm = () => {
-    const { task, updateTask, isEditing, resetTask } = useContext(StateContext);
+    const { task, updateTask, isEditing, resetTask, resetEditing } = useContext(StateContext);
 
     const dispatch = useDispatch();
 
@@ -16,6 +16,7 @@ const TaskForm = () => {
             dispatch(addTask(task)).then(() => dispatch(getTasks()));
         }
         resetTask();
+        resetEditing();
     };
 
     const onInputChange = (e) => {

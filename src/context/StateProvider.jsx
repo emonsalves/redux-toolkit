@@ -29,12 +29,17 @@ const StateProvider = ({ children }) => {
         setIsEditing(value);
     };
 
+    const resetEditing = () => {
+        setIsEditing(false);
+    };
+
     const data = {
         task,
         updateTask,
         resetTask,
         isEditing,
         updateEditing,
+        resetEditing,
     };
 
     return <StateContext.Provider value={data}>{children}</StateContext.Provider>;

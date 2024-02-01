@@ -32,6 +32,8 @@ const TaskList = () => {
 
     return (
         <>
+            <h2>Tasks List</h2>
+
             {loading && <p>Loading...</p>}
 
             {error && <p>Error: {error}</p>}
