@@ -1,43 +1,72 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { addTask, changeTaskStatus, deleteTask, getTasks } from "./tasksActions";
 
-const initialState = [
-    {
-        id: "1",
-        title: "Task 1",
-        completed: false,
-        description: "This is a task",
-    },
-    {
-        id: "2",
-        title: "Task 2",
-        completed: false,
-        description: "This is a task",
-    },
-];
+const initialState = {
+    data: [],
+    loading: false,
+    error: null,
+};
 
-const userSlice = createSlice({
+const tasksSlice = createSlice({
     name: "tasks",
     initialState,
-    reducers: {
-        addTask: (state, action) => {
-            state.push(action.payload);
-        },
-        // editTask: (state, action) => {
-        //     const { id, title, description } = action.payload;
-        //     const foundTask = state.find((task) => task.id === id);
-        //     if (foundTask) {
-        //         foundTask.title = title;
-        //         foundTask.description = description;
-        //     }
-        // },
-        // deleteTask: (state, action) => {
-        //     const foundTask = state.find((task) => task.id === action.payload);
-        //     if (foundTask) {
-        //         state.splice(state.indexOf(foundTask), 1);
-        //     }
-        // },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            // Add the getTasks reducer
+            .addCase(getTasks.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getTasks.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(getTasks.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error;
+            })
+            // Add the changeTaskStatus reducer
+            .addCase(changeTaskStatus.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(changeTaskStatus.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = state.data.map((task) => {
+                    if (task.id === action.payload.id) {
+                        return action.payload;
+                    }
+                    return task;
+                });
+            })
+            .addCase(changeTaskStatus.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error;
+            })
+            // Add the addTask reducer
+            .addCase(addTask.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(addTask.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data.push(action.payload);
+            })
+            .addCase(addTask.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error;
+            })
+            // Add the deleteTask reducer
+            .addCase(deleteTask.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(deleteTask.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = state.data.filter((task) => task.id !== action.payload.id);
+            })
+            .addCase(deleteTask.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error;
+            });
     },
 });
 
-export const { addTask, editTask, deleteTask } = userSlice.actions;
-export default userSlice.reducer;
+export default tasksSlice.reducer;
