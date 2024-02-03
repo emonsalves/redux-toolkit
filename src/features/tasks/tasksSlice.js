@@ -10,10 +10,44 @@ const initialState = {
 const tasksSlice = createSlice({
     name: "tasks",
     initialState,
-    reducers: {},
+    // sync reducers
+    reducers: {
+        // Add the editTask reducer
+        editTask(state, action) {
+            state.data = state.data.map((task) => {
+                if (task.id === action.payload.id) {
+                    return action.payload;
+                }
+                return task;
+            });
+        },
+        // Add the clearTasks reducer
+        clearTasks(state) {
+            state.data = [];
+        },
+
+        // Add the clearError reducer
+        clearError(state) {
+            state.error = null;
+        },
+
+        // Add the clearLoading reducer
+        clearLoading(state) {
+            state.loading = false;
+        },
+
+        // Add the clearState reducer
+
+        clearState(state) {
+            state.data = [];
+            state.loading = false;
+            state.error = null;
+        },
+    },
+    // async reducers
     extraReducers: (builder) => {
         builder
-            // Add the getTasks reducer
+            // ! Add the getTasks reducer
             .addCase(getTasks.pending, (state) => {
                 state.loading = true;
             })
@@ -25,7 +59,7 @@ const tasksSlice = createSlice({
                 state.loading = false;
                 state.error = action.error;
             })
-            // Add the changeTaskStatus reducer
+            // ! Add the changeTaskStatus reducer
             .addCase(changeTaskStatus.pending, (state) => {
                 state.loading = true;
             })
@@ -42,7 +76,7 @@ const tasksSlice = createSlice({
                 state.loading = false;
                 state.error = action.error;
             })
-            // Add the addTask reducer
+            // ! Add the addTask reducer
             .addCase(addTask.pending, (state) => {
                 state.loading = true;
             })
@@ -54,7 +88,7 @@ const tasksSlice = createSlice({
                 state.loading = false;
                 state.error = action.error;
             })
-            // Add the deleteTask reducer
+            // ! Add the deleteTask reducer
             .addCase(deleteTask.pending, (state) => {
                 state.loading = true;
             })

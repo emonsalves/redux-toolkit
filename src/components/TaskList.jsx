@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { changeTaskStatus, deleteTask, getTasks } from "../features/tasks/tasksActions";
 import { StateContext } from "../context/StateProvider";
 
@@ -9,7 +9,6 @@ const TaskList = () => {
     const loading = useSelector((state) => state.tasks.loading);
     const error = useSelector((state) => state.tasks.error);
     const { updateTask, isEditing, updateEditing } = useContext(StateContext);
-    const [trigger, setTrigger] = useState(false);
 
     useEffect(() => {
         dispatch(getTasks());
@@ -49,10 +48,10 @@ const TaskList = () => {
                             }}
                         >
                             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                <label onClick={() => dispatch(changeTaskStatus(task)).then(() => setTrigger(!trigger))}>{task.title}</label>
+                                <label onClick={() => dispatch(changeTaskStatus(task))}>{task.title}</label>
                                 <label>{task.description}</label>
                                 <div>
-                                    <button onClick={() => dispatch(deleteTask(task)).then(() => setTrigger(!trigger))}>
+                                    <button onClick={() => dispatch(deleteTask(task)).then(() => dispatch(getTasks()))}>
                                         <span role="img" aria-label="delete">
                                             ❌
                                         </span>
